@@ -41,8 +41,8 @@ $stmt->close();
 		<table class="table">
 			<thead>
 				<tr>
-					<th>Title</th>
-					<th>-</th>
+					<th class="col-md-10">Title</th>
+					<th class="col-md-2">-</th>
 				</tr>
 			</thead>
 
