@@ -1,17 +1,27 @@
 <?php
 
 session_start();
-if(!isset($_SESSION['username'])) {
-	header('Location: login.php');
+if(isset($_SESSION['username'])) {
+	header('Location: index.php');
+	die();
 }
 
-if(!empty($_POST)) {
+if(isset($_POST['username'])) {
 	include 'db.php';
 
-	$stmt = $db->prepare("INSERT INTO authors(first_name, last_name) VALUES(?, ?)");
-	$stmt->bind_param('ss', $_POST['first_name'], $_POST['last_name']);
-	$stmt->execute();
-	$stmt->close();
+	$query = $db->prepare('SELECT username FROM users WHERE username = ? AND `password` = ?');
+	$query->bind_result($username);
+	$query->bind_param('ss', $_POST['username'], md5($_POST['password']));
+	$query->execute();
+	$query->store_result();
+	if($query->num_rows == 1) {
+		$_SESSION['username'] = $_POST['username'];
+		header('Location: index.php');
+		die();
+	} else {
+		$error = 'Login failed. Username or password incorrect!';
+	}
+	$query->close();
 }
 
 ?>
@@ -20,7 +30,7 @@ if(!empty($_POST)) {
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Add new author | Bookshop</title>
+	<title>Login | Bookshop</title>
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -32,22 +42,21 @@ if(!empty($_POST)) {
 </head>
 
 <body>
-	<div class="container">
-		<?php include 'header.php'; ?>
-
-		<h1>Add new author</h1>
+	<div class="container" style="width: 30%">
+		<h1>Login</h1>
+		<?php if(isset($error)) { ?>
+		<div class="alert alert-danger"><?php echo $error; ?></div>
+		<?php } ?>
 		<form method="POST">
-			<div class="form_group">
-				<label for="first_name">First name</label>
-				<input type="text" name="first_name" id="first_name" class="form-control">
+			<div class="form-group">
+				<input type="text" name="username" class="form-control" placeholder="Username" autofocus>
 			</div>
 
-			<div class="form_group">
-				<label for="last_name">Last name</label>
-				<input type="text" name="last_name" id="last_name" class="form-control">
+			<div class="form-group">
+				<input type="password" name="password" class="form-control" placeholder="Password">
 			</div>
 
-			<button class="btn btn-primary" type="submit" style="margin-top: 10px">Save</button>
+			<button type="submit" class="btn btn-primary">Login</button>
 		</form>
 	</div>
 </body>

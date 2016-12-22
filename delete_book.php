@@ -1,5 +1,10 @@
 <?php
 
+session_start();
+if(!isset($_SESSION['username'])) {
+	header('Location: login.php');
+}
+
 $id = $_POST['id'];
 
 include 'db.php';
