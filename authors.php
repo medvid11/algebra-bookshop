@@ -42,9 +42,9 @@ $stmt->close();
 		<table class="table">
 			<thead>
 				<tr>
-					<th>First name</th>
-					<th>Last name</th>
-					<th>-</th>
+					<th class="col-md-5">First name</th>
+					<th class="col-md-5"> Last name</th>
+					<th class="col-md-2">-</th>
 				</tr>
 			</thead>
 
