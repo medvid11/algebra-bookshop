@@ -38,6 +38,8 @@ if(!empty($_POST)) {
 		$stmt->execute();
 	}
 	$stmt->close();
+
+	move_uploaded_file($_FILES['cover']['tmp_name'], 'uploads/' . $bookId . '.jpg');
 }
 
 ?>
@@ -62,7 +64,7 @@ if(!empty($_POST)) {
 		<?php include 'header.php'; ?>
 
 		<h1>Add new book</h1>
-		<form method="POST">
+		<form method="POST" enctype="multipart/form-data">
 			<div class="form-group">
 				<label for="title">Title</label>
 				<input type="text" class="form-control" name="title" id="title" required>
@@ -94,6 +96,11 @@ if(!empty($_POST)) {
 			<div class="form-group">
 				<label for="price">Price</label>
 				<input type="text" class="form-control" name="price" id="price" required>
+			</div>
+
+			<div class="form-group">
+				<label for="cover">Cover</label>
+				<input type="file" name="cover" id="cover">
 			</div>
 
 			<button class="btn btn-primary" type="submit">Save</button>

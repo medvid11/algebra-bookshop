@@ -54,7 +54,12 @@ $stmt->close();
 			<tbody>
 				<?php foreach($books as $book) { ?>
 				<tr>
-					<td><?php echo $book['title']; ?></td>
+					<td>
+						<?php if(file_exists('uploads/' . $book['id'] . '.jpg')) { ?>
+						<img src="uploads/<?php echo $book['id'] . '.jpg'; ?>" alt="Front cover" height="60">
+						<?php } ?>
+						<?php echo $book['title']; ?>
+					</td>
 					<td>
 					<a href="edit_book.php?id=<?php echo $book['id']; ?>" class="btn btn-default">Edit</a>
 					<form action="delete_book.php" method="POST" style="display: inline-block">
