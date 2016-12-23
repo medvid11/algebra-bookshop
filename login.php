@@ -57,6 +57,8 @@ if(isset($_POST['username'])) {
 			</div>
 
 			<button type="submit" class="btn btn-primary">Login</button>
+
+			<a href="signup.php" class="btn btn-primary">Create a new user</a>
 		</form>
 	</div>
 </body>
